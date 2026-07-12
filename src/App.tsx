@@ -1,19 +1,24 @@
+import { useState } from 'react'
 import Spline from '@splinetool/react-spline'
 
+const SCENE_URL = 'https://prod.spline.design/PtxdoKRiTEQr4Smp/scene.splinecode'
+
 function App() {
+  const [loaded, setLoaded] = useState(false)
+
   return (
-    <div style={{ 
-      width: '100vw', 
-      height: '100vh', 
-      overflow: 'hidden', 
-      backgroundColor: '#000000' 
-    }}>
-      <Spline 
-        scene="https://prod.spline.design/PtxdoKRiTEQr4Smp/scene.splinecode" 
-        style={{ width: '100%', height: '100%' }}
-        onLoad={() => {
-          console.log('Spline scene loaded successfully')
+    <div className="scene-container">
+      {!loaded && <div className="loader" aria-label="Loading" />}
+      <Spline
+        scene={SCENE_URL}
+        renderOnDemand
+        style={{
+          width: '100%',
+          height: '100%',
+          opacity: loaded ? 1 : 0,
+          transition: 'opacity 0.6s ease',
         }}
+        onLoad={() => setLoaded(true)}
       />
     </div>
   )
