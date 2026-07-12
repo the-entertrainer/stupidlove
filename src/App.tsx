@@ -5,9 +5,9 @@ const SCENE_URL = 'https://prod.spline.design/PtxdoKRiTEQr4Smp/scene.splinecode'
 
 /* The Spline runtime advances this scene's Scroll event one step per wheel
    EVENT (sign of deltaY only). Touch devices never fire wheel events, so we
-   translate scrolled distance into synthetic ones. ~25px per step paces the
-   whole animation across the scroll track. */
-const PX_PER_STEP = 25
+   translate scrolled distance into synthetic ones. ~15px per step lets a
+   full scroll of the track comfortably complete the animation. */
+const PX_PER_STEP = 15
 
 function useTouchScrollToWheel(enabled: boolean) {
   useEffect(() => {
