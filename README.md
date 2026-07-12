@@ -1,19 +1,31 @@
 # stupidlove
 
-A fullscreen immersive Spline experience.
+Fullscreen immersive Spline experience built with React.
+
+This project uses the official **@splinetool/react-spline** component for full compatibility with Spline's React code export.
 
 ## Live Preview
 
-Deployed on Vercel → [Preview Link](https://stupidlove.vercel.app)
+https://stupidlove-flfuo3d0z-the-entertrainers-projects.vercel.app
 
-## Local Development
+## Getting Started
 
-Just open `index.html` in your browser.
+```bash
+npm install
+npm run dev
+```
 
-## Tech
+## Tech Stack
 
-- Pure HTML + CSS + minimal JS
-- Embedded Spline scene (fullscreen)
-- Double-click anywhere to toggle fullscreen mode
+- React 19 + TypeScript
+- Vite
+- @splinetool/react-spline
+- Tailwind-ready structure
 
-Built for maximum immersion. Nothing else. Just the experience.
+## Features
+
+- True fullscreen Spline scene
+- Clean React component integration
+- Ready for further development (animations, interactions, UI overlays)
+
+Built for maximum immersion.
