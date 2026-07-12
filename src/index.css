@@ -7,26 +7,23 @@
 html,
 body {
   background-color: #000000;
-  overflow: hidden;
-  overscroll-behavior: none;
+  /* Page must genuinely scroll: Spline's Scroll event reads window.scrollY,
+     and touch devices only produce it through real page scrolling */
+  overscroll-behavior-y: none;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* Fixed positioning + dvh avoids the mobile address-bar resize jump
-   and rubber-band scrolling on iOS */
-#root {
+/* Canvas stays pinned fullscreen while the page scrolls behind it */
+.scene-container {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
-}
-
-.scene-container {
-  width: 100%;
-  height: 100%;
   background-color: #000000;
-  /* Let the Spline canvas own all gestures — no scroll/zoom hijacking */
-  touch-action: none;
+  /* pan-y lets vertical touch drags scroll the page (driving the Spline
+     scroll event); other gestures still reach the canvas */
+  touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -36,7 +33,13 @@ body {
   display: block;
   width: 100% !important;
   height: 100% !important;
-  touch-action: none;
+  touch-action: pan-y;
+}
+
+/* Invisible spacer that gives the document its scroll range */
+.scroll-space {
+  height: 400dvh;
+  pointer-events: none;
 }
 
 .loader {
