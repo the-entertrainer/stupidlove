@@ -13,10 +13,26 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Canvas stays pinned fullscreen while the page scrolls behind it */
+/* Touch devices: a tall track gives the page real scroll range, which the
+   app translates into the wheel steps Spline's scroll animation consumes.
+   Mouse/trackpad devices scroll the scene directly with wheel events, so
+   the page itself stays unscrollable there */
+.scroll-track {
+  height: 100dvh;
+}
+
+@media (pointer: coarse) {
+  .scroll-track {
+    height: 400dvh;
+  }
+}
+
+/* Canvas stays pinned fullscreen while the page scrolls behind it.
+   position:sticky (not fixed) matters: the Spline runtime detects a sticky
+   ancestor and measures its parent track to compute the scroll range */
 .scene-container {
-  position: fixed;
-  inset: 0;
+  position: sticky;
+  top: 0;
   width: 100vw;
   height: 100dvh;
   overflow: hidden;
@@ -34,12 +50,6 @@ body {
   width: 100% !important;
   height: 100% !important;
   touch-action: pan-y;
-}
-
-/* Invisible spacer that gives the document its scroll range */
-.scroll-space {
-  height: 400dvh;
-  pointer-events: none;
 }
 
 .loader {

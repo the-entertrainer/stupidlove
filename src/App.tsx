@@ -1,13 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Spline from '@splinetool/react-spline'
 
 const SCENE_URL = 'https://prod.spline.design/PtxdoKRiTEQr4Smp/scene.splinecode'
 
+/* The Spline runtime advances this scene's Scroll event one step per wheel
+   EVENT (sign of deltaY only). Touch devices never fire wheel events, so we
+   translate scrolled distance into synthetic ones. ~25px per step paces the
+   whole animation across the scroll track. */
+const PX_PER_STEP = 25
+
+function useTouchScrollToWheel(enabled: boolean) {
+  useEffect(() => {
+    if (!enabled || !window.matchMedia('(pointer: coarse)').matches) return
+
+    let lastY = window.scrollY
+    let carry = 0
+    const onScroll = () => {
+      const y = window.scrollY
+      carry += y - lastY
+      lastY = y
+      while (Math.abs(carry) >= PX_PER_STEP) {
+        const dir = Math.sign(carry)
+        window.dispatchEvent(new WheelEvent('wheel', { deltaY: dir * 100, bubbles: true }))
+        carry -= dir * PX_PER_STEP
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [enabled])
+}
+
 function App() {
   const [loaded, setLoaded] = useState(false)
+  useTouchScrollToWheel(loaded)
 
   return (
-    <>
+    <div className="scroll-track">
       <div className="scene-container">
         {!loaded && <div className="loader" aria-label="Loading" />}
         <Spline
@@ -22,10 +50,7 @@ function App() {
           onLoad={() => setLoaded(true)}
         />
       </div>
-      {/* Real scrollable page height: Spline's Scroll event reads window
-          scroll, which touch devices can only produce if the page scrolls */}
-      <div className="scroll-space" aria-hidden="true" />
-    </>
+    </div>
   )
 }
 
